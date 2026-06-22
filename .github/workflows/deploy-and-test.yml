@@ -1,0 +1,108 @@
+name: Web E2E Testing & GitHub Pages Deployment
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  test-and-deploy:
+    runs-on: ubuntu-latest
+
+    services:
+      mongodb:
+        image: mongo:6.0
+        ports:
+          - 27017:27017
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Backend Dependencies
+        working-directory: ./backend
+        run: npm ci
+
+      - name: Configure Backend Env
+        run: |
+          echo "MONGODB_URI=mongodb://localhost:27017/agroai_db" > backend/.env
+          echo "JWT_SECRET=dev_secret_jwt_key_e2e" >> backend/.env
+          echo "JWT_REFRESH_SECRET=dev_refresh_jwt_key_e2e" >> backend/.env
+          echo "PORT=5000" >> backend/.env
+          echo "NODE_ENV=development" >> backend/.env
+          echo "FRONTEND_URL=http://localhost:5173" >> backend/.env
+
+      - name: Start Backend Server
+        working-directory: ./backend
+        run: npm start &
+
+      - name: Install Frontend Dependencies
+        working-directory: ./frontend
+        run: npm ci
+
+      - name: Build Frontend Application for GitHub Pages
+        working-directory: ./frontend
+        run: |
+          echo "VITE_API_BASE_URL=http://localhost:5000/api" > .env
+          npm run build -- --base=/AI-CropDisease-Prediction/
+
+      - name: Start Background Vite Preview Server
+        working-directory: ./frontend
+        run: |
+          npx vite preview --port 5173 --host 127.0.0.1 --base /AI-CropDisease-Prediction/ &
+          sleep 5
+          curl -I http://127.0.0.1:5173/AI-CropDisease-Prediction/
+          echo "TEST_BASE_URL=http://127.0.0.1:5173/AI-CropDisease-Prediction/" >> $GITHUB_ENV
+
+      - name: Install E2E Dependencies
+        working-directory: ./AgroAI-Precision-Crop-DetectionE2E
+        run: npm install
+
+      - name: Run 1,100 E2E Selenium Tests
+        working-directory: ./AgroAI-Precision-Crop-DetectionE2E
+        run: npm test
+
+      - name: Inject Excel and HTML Reports into Frontend Dist
+        run: |
+          mkdir -p frontend/dist/reports
+          cp Test_Results/HTML/execution-report.html frontend/dist/reports/index.html
+          cp Test_Results/selenium-report.xlsx frontend/dist/reports/selenium-report.xlsx
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./frontend/dist
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
+
+      - name: Upload Test Reports Artifact
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Selenium-E2E-Execution-Reports
+          path: |
+            Test_Results/
+            AgroAI-Precision-Crop-DetectionE2E/summary.md
+
+      - name: Publish Job Summary
+        uses: actions/github-script@v7
+        if: always()
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            const summaryPath = path.resolve('AgroAI-Precision-Crop-DetectionE2E', 'summary.md');
+            if (fs.existsSync(summaryPath)) {
+              core.summary.addRaw(fs.readFileSync(summaryPath, 'utf8')).write();
+            }
