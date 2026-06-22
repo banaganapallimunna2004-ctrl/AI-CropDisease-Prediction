@@ -1,0 +1,12 @@
+Scan/Register saving diagnosis:
+
+- Frontend Register page at frontend/src/pages/Register.jsx appears to be a standalone UI and does NOT call backend auth endpoints (no authService, no form submit handler calling /auth/register). It uses handleSubmit with a timeout and then navigates to /login without saving.
+
+- Backend authController.register does email verification and does not set user.verified=true at registration time.
+
+- ScanDisease page saves only when req.user exists (reportController/scanController requires auth via reportRoutes router.use(verifyToken)). Additionally, scanController saves report only when farmId resolves to a FarmLocation; otherwise it returns report:null.
+
+Fix approach:
+1) Replace/repair frontend Register.jsx to actually call authService.register with payload {name,email,phone,password,role}, handle errors, and show verify instructions.
+2) Ensure ScanDisease includes image field name 'image' (it does) and that auth token is set in api defaults when user logs in. Also enforce farmId selection before enabling Scan.
+

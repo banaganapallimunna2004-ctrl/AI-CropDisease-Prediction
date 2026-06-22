@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">अ‍ॅग्रो एआय (AgroAI) - शेती आणि पीक रोग ओळख प्रणाली</string>
+    <string name="agro_auth_welcome_title">स्वागत आहे, शेतकरी मित्र!</string>
+    <string name="agro_auth_welcome_subtitle">पीक रोग ओळख आणि स्मार्ट कृषी देखरेखीसाठी प्रवेश करा</string>
+    <string name="email_or_phone">ईमेल किंवा फोन</string>
+    <string name="password">पासवर्ड</string>
+    <string name="login">लॉगिन</string>
+    <string name="nav_home">मुख्यपृष्ठ</string>
+    <string name="nav_scan">स्कॅन करा</string>
+    <string name="nav_monitor">देखरेख</string>
+    <string name="nav_alerts">सूचना</string>
+    <string name="nav_profile">प्रोफाइल</string>
+    <string name="hello_farmer">नमस्कार, शेतकरी! 👋</string>
+    <string name="scan_your_crop">पिकाचे स्कॅन करा</string>
+    <string name="scan_subtitle">रोग ओळखा आणि त्वरित उपाय मिळवा</string>
+    <string name="todays_weather">आजचे हवामान</string>
+    <string name="soil_moisture">जमिनीतील ओलावा</string>
+    <string name="temperature">तापमान</string>
+    <string name="humidity">आर्द्रता</string>
+    <string name="select_language">भाषा निवडा</string>
+    <string name="english">इंग्रजी</string>
+    <string name="hindi">हिंदी</string>
+    <string name="tamil">तमिळ</string>
+    <string name="telugu">तेलगू</string>
+    <string name="marathi">मराठी</string>
+</resources>

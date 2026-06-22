@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">AgroAI - Detección de Enfermedades de Cultivos</string>
+    <string name="agro_auth_welcome_title">¡Bienvenido, Agricultor!</string>
+    <string name="agro_auth_welcome_subtitle">Acceda a la detección de enfermedades y monitoreo inteligente</string>
+    <string name="email_or_phone">Correo o Teléfono</string>
+    <string name="password">Contraseña</string>
+    <string name="login">INICIAR SESIÓN</string>
+    <string name="nav_home">Inicio</string>
+    <string name="nav_scan">Escanear</string>
+    <string name="nav_monitor">Monitoreo</string>
+    <string name="nav_alerts">Alertas</string>
+    <string name="nav_profile">Perfil</string>
+    <string name="hello_farmer">¡Hola, Agricultor! 👋</string>
+    <string name="scan_your_crop">Escanea tu cultivo</string>
+    <string name="scan_subtitle">Detecta enfermedades y obtén soluciones instantáneas</string>
+    <string name="todays_weather">Clima de hoy</string>
+    <string name="soil_moisture">Humedad del suelo</string>
+    <string name="temperature">Temperatura</string>
+    <string name="humidity">Humedad</string>
+    <string name="select_language">Seleccionar idioma</string>
+    <string name="english">Inglés</string>
+    <string name="hindi">Hindi</string>
+    <string name="tamil">Tamil</string>
+    <string name="telugu">Telugu</string>
+    <string name="marathi">Marathi</string>
+    <string name="spanish">Español</string>
+</resources>
