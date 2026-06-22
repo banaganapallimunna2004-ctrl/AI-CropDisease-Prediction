@@ -23,7 +23,7 @@ services:
         value: "*" # Update this with your frontend URL once frontend is deployed
 
   # 2. Flask AI Service (Private Service - internal access only)
-  - type: pservice
+  - type: private
     name: agro-ai-vision
     env: docker
     dockerContext: ai
